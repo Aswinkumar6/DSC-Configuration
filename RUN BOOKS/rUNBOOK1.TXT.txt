@@ -1,1 +1,14 @@
-RUNBOOK1
+###########  STOP THE VM  ###############
+
+#AUTHENTICATION OF AZURE AUTOMATON ACCOUNT
+
+$connection = Get-AutomationConnection -Name AzureRunAsConnection ##Automation account properties into connection variable
+
+ADD-AzureRmAccount -ServicePrincipal -Tenant $connection.TenantID `
+-ApplicationID $connection.ApplicationID -CertificateThumbprint $connection.CertificateThumbprint ##Connecting to Azure RM
+
+$AzureContext = Select-AzureRmSubscription -SubscriptionId $connection.SubscriptionID
+
+#Stop the VM aswin1 using  Force parameter
+
+stop-AzureRmVM -Name 'aswin1' -ResourceGroupName 'borderless' -force
